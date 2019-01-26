@@ -36,7 +36,7 @@ namespace Task2
         {
             this.id = id;
         }
-
+        //C
         public void IncrementYearOfStudy()
         {
             yearOfStudy++;
