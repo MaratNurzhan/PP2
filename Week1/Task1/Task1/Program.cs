@@ -39,7 +39,6 @@ namespace Task1
 
         static bool isPrime(int n)
         {
-            // comments
             if (n <= 0) return false;
             if (n == 1) return false;
             if (n == 2) return true;
