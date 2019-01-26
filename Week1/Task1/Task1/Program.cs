@@ -29,6 +29,7 @@ namespace Task1
                     list.Add(arr1[i]);
                 }
             }
+
             Console.WriteLine(cnt);
             foreach (int item in list)
                 Console.Write(item + " ");
