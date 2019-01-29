@@ -11,12 +11,15 @@ namespace Task4
         static void Main(string[] args)
         {
             int n = int.Parse(Console.ReadLine());
+            //2d массив
             string[,] arr = new string[n,n];
 
             for(int i=0; i < n; i++)
             {
+                //С каждым i-ым рядом массива количество в ряду элементов увеличивается на один
                 for(int j=0; j<i+1; j++)
                 {
+                    //Записываю строку в элементы массива
                     arr[i, j] ="[*]";
                 }
                
@@ -27,6 +30,7 @@ namespace Task4
                 {
                     Console.Write(arr[i, j] + " ");
                 }
+                //После каждого i-го ряда массивы выводятся с новой строки
                 Console.WriteLine();
             }
            
