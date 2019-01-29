@@ -10,7 +10,10 @@ namespace Task3
     {
         static void Main(string[] args)
         {
+            
             int n = int.Parse(Console.ReadLine());
+            //string str=Console.ReadLine();
+            //string[] arr=str.Split();
             string[] arr = Console.ReadLine().Split();
             int[] arr1 = new int[n];
             for(int i=0; i<arr.Length; i++)
