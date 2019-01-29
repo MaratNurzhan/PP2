@@ -17,26 +17,27 @@ namespace Task2
             this.name = name;
             this.yearOfStudy = yearOfStudy;
         }
-
+        //Свойство, которое возвращает name
         public string GetName()
         {
             return name;
         }
+        //Свойство, которое позволяет задать значение
         public void SetName(string name)
         {
             this.name = name;
         }
-
+       //Свойство возвращает ID
         public string GetID()
         {
             return id;
         }
-
+        //Свойство позволяет задать значение ID
         public void SetID(string id)
         {
             this.id = id;
         }
-        //C
+        //Свойство увеличивает на один год обучения
         public void IncrementYearOfStudy()
         {
             yearOfStudy++;
