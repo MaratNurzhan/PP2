@@ -8,36 +8,42 @@ namespace Task2
 {
     class Student
     {
+        //modifier is private by default(if not written)
         string name;
         string id;
         int yearOfStudy;
-
+        //Constructor to give values for name and yearOfStudy
         public Student(string name, int yearOfStudy)
         {
+            //name/yearOfStudy are values that we put in this.name/this.yearOfStudy
+            //"this." is used to show to what we refer(value entered by user or memeory area) 
             this.name = name;
             this.yearOfStudy = yearOfStudy;
         }
-        //Свойство, которое возвращает name
+        //Property that allow to get "name" of type string 
+        //It does not set "name"
         public string GetName()
         {
             return name;
         }
-        //Свойство, которое позволяет задать значение
+        //Property that does not return anything(void type), and gets "name" (as argument)
+        //We can set value for this.name
         public void SetName(string name)
         {
             this.name = name;
         }
-       //Свойство возвращает ID
+       //Property that returns ID
         public string GetID()
         {
             return id;
         }
-        //Свойство позволяет задать значение ID
+        //Property that set value for ID
         public void SetID(string id)
         {
             this.id = id;
         }
-        //Свойство увеличивает на один год обучения
+        //Property that neither set or get value
+        //Property increments the year of study
         public void IncrementYearOfStudy()
         {
             yearOfStudy++;
@@ -48,6 +54,10 @@ namespace Task2
     {
         static void Main(string[] args)
         {
+            Student student1 = new Student("Nurzhan", 2);
+           
+            student1.GetName();
+            Console.ReadKey();
         }
     }
 }
