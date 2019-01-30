@@ -21,7 +21,7 @@ namespace Task3
             {
                 //Every element of arr is of type string
                 //Convert into int using "int.Parse"
-
+                //Converted elements of arr place into int arr1
                 int n1 = int.Parse(arr[i]);
                 arr1[i] = n1;
             }
