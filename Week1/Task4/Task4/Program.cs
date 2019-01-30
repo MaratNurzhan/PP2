@@ -10,16 +10,17 @@ namespace Task4
     {
         static void Main(string[] args)
         {
+            //Convert string from input into int
             int n = int.Parse(Console.ReadLine());
-            //2d массив
+            //initialize 2d array (nxn)
             string[,] arr = new string[n,n];
 
             for(int i=0; i < n; i++)
             {
-                //С каждым i-ым рядом массива количество в ряду элементов увеличивается на один
+                //with every i-th row the number of elements in them increments
                 for(int j=0; j<i+1; j++)
                 {
-                    //Записываю строку в элементы массива
+                    //put string into arr[i,j] 
                     arr[i, j] ="[*]";
                 }
                
@@ -30,7 +31,7 @@ namespace Task4
                 {
                     Console.Write(arr[i, j] + " ");
                 }
-                //После каждого i-го ряда массивы выводятся с новой строки
+                //After each i-th row massive starts from new line
                 Console.WriteLine();
             }
            
