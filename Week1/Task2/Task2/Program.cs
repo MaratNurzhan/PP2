@@ -56,7 +56,7 @@ namespace Task2
         {
             Student student1 = new Student("Nurzhan", 2);
            
-            student1.GetName();
+            Console.WriteLine( student1.GetName());
             Console.ReadKey();
         }
     }
