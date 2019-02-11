@@ -55,8 +55,12 @@ namespace Task2
         static void Main(string[] args)
         {
             Student student1 = new Student("Nurzhan", 2);
+
+
            
             Console.WriteLine( student1.GetName());
+            student1.IncrementYearOfStudy();
+           
             Console.ReadKey();
         }
     }

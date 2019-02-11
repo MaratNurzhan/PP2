@@ -7,6 +7,7 @@ using System.IO;
 
 namespace Task3
 {
+    //Change
     class Program
     {
         static void PrintSpaces(int level)
