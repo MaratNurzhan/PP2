@@ -37,7 +37,7 @@ namespace Task3
         }
         static void Main(string[] args)
         {
-            //Take apth from console
+            //Take path from console
             string path = Console.ReadLine();
             //Get directory according to path
             DirectoryInfo d = new DirectoryInfo("@" + path);
