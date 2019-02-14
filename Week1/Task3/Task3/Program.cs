@@ -25,12 +25,31 @@ namespace Task3
                 int n1 = int.Parse(arr[i]);
                 arr1[i] = n1;
             }
-            //using foreach cycle we output every element el twice 
-            foreach(var el in arr1)
-            {
-                //using "Write" not to move to the next line(new array will output in one line)
-                Console.Write($"{el} {el} ");
-            }
+            //initialize new array "arr2" whose size is doubled
+
+            int[] arr2 = new int[2*arr1.Length];
+           
+            //variable for indexes in arr2
+                int j = 0;
+                for (int i = 0; i < arr1.Length; i++)
+                    {
+                        //initially j is 0, so first element arr1[i] in arr2[j]
+                        //arr2[0]=arr1[0]
+                
+                        arr2[j] = arr1[i];
+                        //increment j to put the same value in next arr2[1]
+                        //arr2[0]=arr1[0]
+                        j++;
+                        arr2[j] = arr1[i];
+                        //increment j to put in arr2[3] this time another element arr1[1]
+                        j++;
+                    }
+                //output arr2
+                foreach (var el in arr2)
+                    { 
+                        Console.Write(el + " ");
+                    }
+           
             Console.ReadKey();
         }
     }

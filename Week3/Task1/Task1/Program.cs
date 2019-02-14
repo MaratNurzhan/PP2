@@ -19,7 +19,9 @@ namespace Task1
 
     class FarManager
     {
-        //field to show position of current directory/file 
+        /// <summary>
+        /// field to show position of current directory/file in showing list
+        /// </summary>
         public int cur;
         //size of content of directory(number of directories/files
         public int size;
@@ -106,14 +108,14 @@ namespace Task1
 
         public void Show(string path)
         {
-
             DirectoryInfo directory = new DirectoryInfo(path);
             FileSystemInfo[] fileSystemInfos = directory.GetFileSystemInfos();
             size = fileSystemInfos.Length;
             int index = 0;
             //running through fileSystemInfos we check if the file is hidden, if it is we skip it and reduce size of fileSystemInfos
-            foreach (FileSystemInfo fs in fileSystemInfos)
+            for (int i = 0, j = 1; i < fileSystemInfos.Length; i ++)
             {
+                FileSystemInfo fs = fileSystemInfos[i];
                 if (hideHiddenFiles && fs.Name.StartsWith("."))
                 {
                     size--;
@@ -123,46 +125,76 @@ namespace Task1
                 //so it will be shown according to conditions in Color()
                 Color(fs, index);
                 //Output on console name of fs 
-                Console.WriteLine(fs.Name);
+                Console.WriteLine((j++) + ": " + fs.Name);
                 //increment index
                 index++;
             }
         }
-
-        public FileSystemInfo GetFSI(DirectoryInfo directory, int cursor)
+        public void Show(FileSystemInfo[] files)
         {
-            FileSystemInfo fs = null;
-            //variable for 
-            int k = 0;
-            for (int i = 0; i < directory.GetFileSystemInfos().Length; i++)
+            for (int i = 0, j = 1; i < files.Length; i++)
             {
-                if (hideHiddenFiles && directory.GetFileSystemInfos()[i].Name.StartsWith("."))
+                FileSystemInfo fs = files[i];
+                Color(fs, i);
+                Console.WriteLine((j++) + ": " + fs.Name);
+            }
+        }
+
+        /// <summary>
+        /// return FileSystemInfo that shows cursor in parent directory
+        /// </summary>
+        /// <param name="parentDirectory"></param>
+        /// <param name="cursor"></param>
+        /// <returns></returns>
+        public FileSystemInfo GetFSI(DirectoryInfo parentDirectory, int cursor)
+        {
+            for (int i = 0, k = 0; i < parentDirectory.GetFileSystemInfos().Length; i++)
+            {
+                if (hideHiddenFiles && parentDirectory.GetFileSystemInfos()[i].Name.StartsWith("."))
                     continue;
                 if (cursor == k)
-                {
-                    fs = directory.GetFileSystemInfos()[i];
-                    break;
-                }
+                    return parentDirectory.GetFileSystemInfos()[i];
+
                 k++;
             }
-            return fs;
+
+            return null;
+        }
+
+        public void ClearConsole()
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            //Clear() used to clear console after each pressing of key to hide history
+            Console.Clear();
+        }
+
+        public FileSystemInfo[] GetShowingList(DirectoryInfo parentDirectory)
+        {
+            List<FileSystemInfo> showingList = new List<FileSystemInfo>();
+            for (int i = 0; i < parentDirectory.GetFileSystemInfos().Length; i++)
+            {
+                FileSystemInfo file = parentDirectory.GetFileSystemInfos()[i];
+                bool isFileHidden = hideHiddenFiles ? file.Name.StartsWith(".") : false;
+                if (!isFileHidden) showingList.Add(file);
+            }
+            size = showingList.Count();
+            return showingList.ToArray();
         }
 
         public void Start(string path)
         {
-            DirectoryInfo directory = new DirectoryInfo(path);
+            DirectoryInfo parentDirectory = new DirectoryInfo(path);
+            FileSystemInfo[] showingArray = GetShowingList(parentDirectory);
             ConsoleKeyInfo consoleKey = Console.ReadKey();
             FileSystemInfo fs = null;
             while (true)
             {
-
-                Console.BackgroundColor = ConsoleColor.Black;
-                //Clear() used to clear console after each pressing of key to hide history
-                Console.Clear();
-                Console.ForegroundColor = ConsoleColor.White;
+                ClearConsole();
                 Console.WriteLine("C - create,\tD - delete,\tR - rename");
                 //output contents as in Show()
-                Show(path);
+                //Show(path);
+                Show(showingArray);
                 //Read the key we press
                 consoleKey = Console.ReadKey();
 
@@ -173,8 +205,9 @@ namespace Task1
                         //cur is positioned at 0
                         //path changes
                         cur = 0;
-                        directory = directory.Parent;
-                        path = directory.FullName;
+                        parentDirectory = parentDirectory.Parent;
+                        path = parentDirectory.FullName;
+                        showingArray = GetShowingList(parentDirectory);
                         break;
                     case ConsoleKey.UpArrow:
                         Up();
@@ -185,26 +218,28 @@ namespace Task1
                     case ConsoleKey.RightArrow:
                         //show hidden files
                         hideHiddenFiles = false;
+                        showingArray = GetShowingList(parentDirectory);
                         break;
                     case ConsoleKey.LeftArrow:
                         //conceal hidden files
                         hideHiddenFiles = true;
+                        showingArray = GetShowingList(parentDirectory);
                         break;
                     case ConsoleKey.Enter:
                         //the FileSystemInfo fs is returned by function "GetFSI()"
-                        fs = GetFSI(directory, cur);
+                        fs = showingArray[cur];// GetFSI(parentDirectory, cur);
                         if (fs.GetType() == typeof(DirectoryInfo))
                         {
                             //if press "enter" to directory path changes
                             cur = 0;
-                            directory = new DirectoryInfo(fs.FullName);
+                            parentDirectory = new DirectoryInfo(fs.FullName);
+                            showingArray = GetShowingList(parentDirectory);
                             path = fs.FullName;
                         }
                         else
                         {
                             //if we press "enter" to a file, we clear console to output the content of the file
-                            Console.BackgroundColor = ConsoleColor.Black;
-                            Console.Clear();
+                            ClearConsole();
                             //"using" closes the stream
                             using(StreamReader sr = new StreamReader(fs.FullName))
                             {
@@ -217,8 +252,7 @@ namespace Task1
                         break;
                     case ConsoleKey.C:
                         //clear console and input the name of derectory we add
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.Clear();
+                        ClearConsole();
                         Console.WriteLine("Adding new directory");
                         Console.Write("Enter directory name: ");
                         string directoryName = Console.ReadLine();
@@ -226,16 +260,15 @@ namespace Task1
                         AddDirectory(Path.Combine(path,directoryName));
                         break;
                     case ConsoleKey.D:
-                        fs = GetFSI(directory, cur);
+                        fs = showingArray[cur];// GetFSI(parentDirectory, cur);
                         if (fs.GetType() == typeof(DirectoryInfo))
                             DeleteDirectory(fs.FullName);
                         else
                             DeleteFile(fs.FullName);
                         break;
                     case ConsoleKey.R:
-                        fs = GetFSI(directory, cur);
-                        Console.BackgroundColor = ConsoleColor.White;
-                        Console.Clear();
+                        fs = showingArray[cur];// GetFSI(parentDirectory, cur);
+                        ClearConsole();
                         Console.WriteLine($"Rename \"{fs.Name}\"");
                         Console.Write("Enter new name: ");
                         string newName = Console.ReadLine();
