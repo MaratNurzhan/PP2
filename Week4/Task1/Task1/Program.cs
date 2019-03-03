@@ -26,7 +26,7 @@ namespace Complex
                 bn.Serialize(fs, complex);
             }
 
-            using(fs=new FileStream("complex.txt", FileMode.OpenOrCreate))
+            using (fs = new FileStream("complex.txt", FileMode.OpenOrCreate))
             {
                 complex = bn.Deserialize(fs) as Complex;
             }

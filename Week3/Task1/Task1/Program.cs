@@ -52,7 +52,7 @@ namespace Task1
         //function to add directory, we send to function the path, 
         //because we must include the name of new directory that will be the part of path
         //then we must access path
-        public void AddDirectory(string path) 
+        public void AddDirectory(string path)
         {
             //if the given path(including name) exists, we must prevent creating new directory
             if (!Directory.Exists(path))
@@ -72,14 +72,14 @@ namespace Task1
         //RenameDirectory(accepts to paths)
         //method move works also as renaming, because when we change path we can simply change the name 
         //of directory(replacing the part od path with name of directory
-        
+
         public void RenameDirectory(string path, string newPath)
         {
             if (Directory.Exists(path))
                 Directory.Move(path, newPath);
 
         }
-        public void RenameFile(string path,string newPath)
+        public void RenameFile(string path, string newPath)
         {
             if (File.Exists(path))
                 File.Move(path, newPath);
@@ -106,30 +106,30 @@ namespace Task1
             }
         }
 
-        public void Show(string path)
-        {
-            DirectoryInfo directory = new DirectoryInfo(path);
-            FileSystemInfo[] fileSystemInfos = directory.GetFileSystemInfos();
-            size = fileSystemInfos.Length;
-            int index = 0;
-            //running through fileSystemInfos we check if the file is hidden, if it is we skip it and reduce size of fileSystemInfos
-            for (int i = 0, j = 1; i < fileSystemInfos.Length; i ++)
-            {
-                FileSystemInfo fs = fileSystemInfos[i];
-                if (hideHiddenFiles && fs.Name.StartsWith("."))
-                {
-                    size--;
-                    continue;
-                }
-                //if fs is not hidden call function Color() sending the file and its index
-                //so it will be shown according to conditions in Color()
-                Color(fs, index);
-                //Output on console name of fs 
-                Console.WriteLine((j++) + ": " + fs.Name);
-                //increment index
-                index++;
-            }
-        }
+        //public void Show(string path)
+        //{
+        //    DirectoryInfo directory = new DirectoryInfo(path);
+        //    FileSystemInfo[] fileSystemInfos = directory.GetFileSystemInfos();
+        //    size = fileSystemInfos.Length;
+        //    int index = 0;
+        //    //running through fileSystemInfos we check if the file is hidden, if it is we skip it and reduce size of fileSystemInfos
+        //    for (int i = 0, j = 1; i < fileSystemInfos.Length; i++)
+        //    {
+        //        FileSystemInfo fs = fileSystemInfos[i];
+        //        if (hideHiddenFiles && fs.Name.StartsWith("."))
+        //        {
+        //            size--;
+        //            continue;
+        //        }
+        //        //if fs is not hidden call function Color() sending the file and its index
+        //        //so it will be shown according to conditions in Color()
+        //        Color(fs, index);
+        //        //Output on console name of fs 
+        //        Console.WriteLine((j++) + ": " + fs.Name);
+        //        //increment index
+        //        index++;
+        //    }
+        //}
         public void Show(FileSystemInfo[] files)
         {
             for (int i = 0, j = 1; i < files.Length; i++)
@@ -146,20 +146,20 @@ namespace Task1
         /// <param name="parentDirectory"></param>
         /// <param name="cursor"></param>
         /// <returns></returns>
-        public FileSystemInfo GetFSI(DirectoryInfo parentDirectory, int cursor)
-        {
-            for (int i = 0, k = 0; i < parentDirectory.GetFileSystemInfos().Length; i++)
-            {
-                if (hideHiddenFiles && parentDirectory.GetFileSystemInfos()[i].Name.StartsWith("."))
-                    continue;
-                if (cursor == k)
-                    return parentDirectory.GetFileSystemInfos()[i];
+        //public FileSystemInfo GetFSI(DirectoryInfo parentDirectory, int cursor)
+        //{
+        //    for (int i = 0, k = 0; i < parentDirectory.GetFileSystemInfos().Length; i++)
+        //    {
+        //        if (hideHiddenFiles && parentDirectory.GetFileSystemInfos()[i].Name.StartsWith("."))
+        //            continue;
+        //        if (cursor == k)
+        //            return parentDirectory.GetFileSystemInfos()[i];
 
-                k++;
-            }
+        //        k++;
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         public void ClearConsole()
         {
@@ -198,7 +198,7 @@ namespace Task1
                 //Read the key we press
                 consoleKey = Console.ReadKey();
 
-                switch(consoleKey.Key)
+                switch (consoleKey.Key)
                 {
                     case ConsoleKey.Escape:
                         //go the parent directory 
@@ -241,7 +241,7 @@ namespace Task1
                             //if we press "enter" to a file, we clear console to output the content of the file
                             ClearConsole();
                             //"using" closes the stream
-                            using(StreamReader sr = new StreamReader(fs.FullName))
+                            using (StreamReader sr = new StreamReader(fs.FullName))
                             {
                                 //we output on console what we read from file
                                 Console.WriteLine(sr.ReadToEnd());
@@ -256,8 +256,8 @@ namespace Task1
                         Console.WriteLine("Adding new directory");
                         Console.Write("Enter directory name: ");
                         string directoryName = Console.ReadLine();
-                        
-                        AddDirectory(Path.Combine(path,directoryName));
+
+                        AddDirectory(Path.Combine(path, directoryName));
                         break;
                     case ConsoleKey.D:
                         fs = showingArray[cur];// GetFSI(parentDirectory, cur);
@@ -285,4 +285,3 @@ namespace Task1
         }
     }
 }
-
